@@ -1,7 +1,8 @@
 CC := gcc
-CFLAGS := -g -Wall -Wextra
+CFLAGS := -g -Wall -Wextra -lsqlite3 -L/usr/lib64/ -I/usr/include/
 
-init:
+sample: src/sample.c
+	gcc -Wall -o sample.o src/sample.c -lsqlite3 -L/usr/lib64/ -I/usr/include/
 
 clean:
-	$(RM) init
+	$(RM) sample.o
