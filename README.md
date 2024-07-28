@@ -30,3 +30,27 @@ sqlite3 データベース名
 
 ここでsqlによるデータの追加や削除ができる。 \
 cdしなくても実行自体はできるがファイルが生成される場所がカレントディレクトリになるので注意。
+
+# サンプルについて
+
+src下に、
+```
+placeholder.c
+sample.c
+```
+というファイルを作成した。
+一応サンプルなので、これを参考にしてもらえれば
+
+## プレースホルダについて
+
+src/placeholder.cに以下の行があるがsqlの一部が?となっている。
+```
+rc = sqlite3_prepare_v2(db,"SELECT id, name FROM tb_test WHERE id = ?", -1, &stmt, 0);
+```
+ここに、後から数値をバインドすることでsqlに安全に値を埋め込める。
+```
+//選択する行
+int id = 1;
+//バインド
+sqlite3_bind_int(stmt, 1, id);
+```
