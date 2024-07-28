@@ -11,6 +11,9 @@ int main( void ){
   char sql_str[255];
   memset( &sql_str[0] , 0x00 , sizeof(sql_str) );
 
+  sqlite3_stmt *stmt;
+  int rc;
+
   // アクセス
   ret = sqlite3_open(
           "database/db_test.sqlite3" , // DBファイル名
@@ -22,7 +25,17 @@ int main( void ){
   }
 
   // SQL文発行
-  snprintf( &sql_str[0] , sizeof(sql_str)-1 , "select * from tb_test" );
+  // snprintf( &sql_str[0] , sizeof(sql_str)-1 , "select * from tb_test" );
+  rc = sqlite3_prepare_v2(conn,"select * from tb_test where id = ?", -1, &stmt, 0);
+  if(rc != SQLITE_OK){
+        printf("ERROR(%d) %s\n",rc, sqlite3_errmsg(db));
+        sqlite3_close(db);
+        return -1;
+  }
+
+  sqlite3_bind_int(stmt, 1, id);
+  rc = sqlite3_step(stmt);
+
   ret = sqlite3_exec(
           conn        , // DBコネクション
           &sql_str[0] , // SQL文
